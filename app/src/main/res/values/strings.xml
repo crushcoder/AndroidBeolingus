@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Beolingus</string>
+    <string name="title_activity_translate">TranslateActivity</string>
+</resources>
