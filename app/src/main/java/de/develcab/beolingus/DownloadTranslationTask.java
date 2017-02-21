@@ -36,13 +36,13 @@ public class DownloadTranslationTask extends AsyncTask<String, Void, Long> {
 
     private List<Translation> translations = Collections.emptyList();
 
-    public DownloadTranslationTask(TextView textView, TableLayout table) {
+    public DownloadTranslationTask(TextView textView, TableLayout table, BeolingusRestService beo) {
         this.textView = textView;
         this.table = table;
         table.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));// assuming the parent view is a LinearLayout
         table.setStretchAllColumns(true);
 
-        this.beo = new BeolingusRestService();
+        this.beo = beo;
     }
 
     protected Long doInBackground(String... searchStrings) {
@@ -54,9 +54,9 @@ public class DownloadTranslationTask extends AsyncTask<String, Void, Long> {
     protected void onPostExecute(Long result) {
 
         if (translations.isEmpty()) {
-            textView.setText("Error in server connection.");
         } else {
             Log.d(TAG, "translations found: " + translations.size());
+            textView.setText("");
             for (Translation translation : translations) {
                 TableRow row = new TableRow(table.getContext());
                 row.setLayoutParams(tableParams); // TableLayout is the parent view

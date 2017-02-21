@@ -29,22 +29,34 @@ public class BeolingusRestService {
     static final String URL_TEMPLATE = "http://dict.tu-chemnitz.de/dings.cgi?lang=de&mini=1&count=50&query=%s&service=%s";
     static final String SERVICE_DEEN = "deen";
 
-    public BeolingusRestService() {
+    private TranslationStorage storage;
+
+    public BeolingusRestService(TranslationStorage storage) {
+        this.storage = storage;
     }
 
     public List<Translation> loadTranslation(String searchTerm) {
         Log.d(TAG, "start translation");
         String urlStr = String.format(URL_TEMPLATE, searchTerm, SERVICE_DEEN);
-        try {
-            URL url = new URL(urlStr);
-            String html = loadHtml(url);
-            Log.d(TAG, "translation loaded success: " + html);
 
-            return mapHtml(html);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Url was wrong: " + urlStr);
-            return Collections.emptyList();
+        String html;
+        if(storage.isCached(searchTerm)) {
+            html = storage.loadHtml(searchTerm);
+            Log.d(TAG, "translation loaded from cache: " + searchTerm + ": " + html);
+        } else {
+            try {
+                URL url = new URL(urlStr);
+                html = loadHtml(url);
+                Log.d(TAG, "translation loaded from web success: " + html);
+                storage.storeSearch(searchTerm, html);
+                Log.d(TAG, "translation saved");
+            } catch (MalformedURLException e) {
+                Log.e(TAG, "Url was wrong: " + urlStr);
+                return Collections.emptyList();
+            }
         }
+
+        return mapHtml(html);
     }
 
     private String loadHtml(URL url) {

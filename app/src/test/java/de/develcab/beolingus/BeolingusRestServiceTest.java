@@ -2,6 +2,7 @@ package de.develcab.beolingus;
 
 import junit.framework.Assert;
 
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -191,7 +192,8 @@ public class BeolingusRestServiceTest {
 
     @Before
     public void init() throws Exception {
-        beo = new BeolingusRestService();
+        TranslationStorage translationStorage = EasyMock.createMock(TranslationStorage.class);
+        beo = new BeolingusRestService(translationStorage);
     }
 
     @Test
