@@ -1,3 +1,6 @@
+(1)
+The code and configuration for the app goes under, except the app icons, see (2)
+
 MIT License
 
 Copyright (c) 2017 Jürgen Brüster
@@ -19,3 +22,21 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+(2)
+The application icons are based on https://commons.wikimedia.org/wiki/File:Great_Myna.svg
+Therefore they have to be under following Creative Commons license:
+
+I, the copyright holder of this work, hereby publish it under the following licenses:
+Creative Commons attribution share alike
+This files are licensed under the Creative Commons Attribution-Share Alike 3.0 Unported license.
+
+https://creativecommons.org/licenses/by-sa/3.0/deed.en
+
+(3)
+The application uses/downloads, the German-English translation database file of the Beolingus project.
+It therefore downloads it from http://ftp.tu-chemnitz.de/pub/Local/urz/ding/de-en/
+
+The database underlies the GNU General Public License 3
+http://www.gnu.org/copyleft/gpl.html
