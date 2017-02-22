@@ -1,11 +1,11 @@
 package de.develcab.beolingus;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -17,10 +17,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
-    public final static String TEXT_2_TRANSLATE = "de.develcab.beolingus.MESSAGE";
-
 
     private BeolingusRestService beo;
+
+    private Context context;
 
     private List<String> searchTerms = new ArrayList<>();
 
@@ -30,18 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final EditText editText = (EditText) findViewById(R.id.translationText);
-//        editText.setOnKeyListener(new View.OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                // If the event is a key-down event on the "enter" button
-//                if ( event.getAction() == KeyEvent.ACTION_DOWN
-//                        && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER
-//                            || editText.getText().toString().endsWith("\n"))) { // Perform action on key press
-//                    translateText(null);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -51,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        this.context = editText.getContext();
         TranslationStorage translationStorage = new TranslationStorage(editText.getContext());
-        beo = new BeolingusRestService(translationStorage);
+        RestTemplate restTemplate = new RestTemplate();
+        beo = new BeolingusRestService(translationStorage, restTemplate);
         fillDropdownlist(translationStorage);
         refreshAutocomplete();
     }
@@ -63,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshAutocomplete() {
         // Autocomplete
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.context,
                 android.R.layout.simple_dropdown_item_1line, searchTerms);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.translationText);

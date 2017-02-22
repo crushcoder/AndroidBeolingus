@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile ([group: 'org.jsoup', name: 'jsoup', version: '1.10.2'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.1'])
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12', 'org.springframework:spring-test:2.5', 'org.easymock:easymock:3.1'
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -20,15 +33,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12', 'org.springframework:spring-test:2.5', 'org.easymock:easymock:3.1'
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-}

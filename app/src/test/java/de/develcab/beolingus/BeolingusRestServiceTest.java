@@ -193,7 +193,8 @@ public class BeolingusRestServiceTest {
     @Before
     public void init() throws Exception {
         TranslationStorage translationStorage = EasyMock.createMock(TranslationStorage.class);
-        beo = new BeolingusRestService(translationStorage);
+        RestTemplate restTemplate = EasyMock.createMock(RestTemplate.class);
+        beo = new BeolingusRestService(translationStorage, restTemplate);
     }
 
     @Test

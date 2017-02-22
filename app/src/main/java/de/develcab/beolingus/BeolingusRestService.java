@@ -2,12 +2,15 @@ package de.develcab.beolingus;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.develcab.beolingus.dto.CachedResult;
 import de.develcab.beolingus.dto.Translation;
 import de.develcab.beolingus.htmlIterator.RowIterator;
 
@@ -30,9 +34,11 @@ public class BeolingusRestService {
     static final String SERVICE_DEEN = "deen";
 
     private TranslationStorage storage;
+    private RestTemplate restTemplate;
 
-    public BeolingusRestService(TranslationStorage storage) {
+    public BeolingusRestService(TranslationStorage storage, RestTemplate restTemplate) {
         this.storage = storage;
+        this.restTemplate = restTemplate;
     }
 
     public List<Translation> loadTranslation(String searchTerm) {
@@ -40,41 +46,56 @@ public class BeolingusRestService {
         String urlStr = String.format(URL_TEMPLATE, searchTerm, SERVICE_DEEN);
 
         String html;
+        List<Translation> translations;
         if(storage.isCached(searchTerm)) {
             html = storage.loadHtml(searchTerm);
             Log.d(TAG, "translation loaded from cache: " + searchTerm + ": " + html);
+
+            return mapJson(html);
         } else {
-            try {
-                URL url = new URL(urlStr);
-                html = loadHtml(url);
-                Log.d(TAG, "translation loaded from web success: " + html);
-                storage.storeSearch(searchTerm, html);
-                Log.d(TAG, "translation saved");
-            } catch (MalformedURLException e) {
+            html = restTemplate.load(urlStr, StandardCharsets.ISO_8859_1);
+            if(html == null) {
                 Log.e(TAG, "Url was wrong: " + urlStr);
+
                 return Collections.emptyList();
+            } else {
+                Log.d(TAG, "translation loaded from web success: " + html);
+                translations = mapHtml(html);
+                String json = createJson(translations);
+                storage.storeSearch(searchTerm, json);
+                Log.d(TAG, "translation saved");
+
+                return translations;
             }
         }
-
-        return mapHtml(html);
     }
 
-    private String loadHtml(URL url) {
-        try(BufferedReader beoStream = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.ISO_8859_1))) {
-            StringBuilder htmlBuilder = new StringBuilder();
-            String s;
-            while ((s = beoStream.readLine()) != null) {
-                htmlBuilder.append(s);
-            }
-
-            return htmlBuilder.toString();
+    private List<Translation> mapJson(String html) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            CachedResult result = objectMapper.readValue(html, CachedResult.class);
+            return result.getTranslations();
         } catch (IOException e) {
-            Log.e(TAG, "Stream couldn't be read", e);
-            return null;
+            Log.e(TAG, "Json couldn't be deserialized", e);
+            return Collections.emptyList();
         }
     }
 
-    private List<Translation> mapHtml(String html) {
+    private String createJson(List<Translation> translations) {
+        CachedResult cachedResult = new CachedResult();
+        cachedResult.setTranslations(translations);
+        ObjectMapper objectMapper = new ObjectMapper();
+        StringWriter writer = new StringWriter();
+        try {
+            objectMapper.writeValue(writer, cachedResult);
+        } catch (IOException e) {
+            Log.e(TAG, "Json couldn't be serialized", e);
+        }
+
+        return writer.toString();
+    }
+
+    private static List<Translation> mapHtml(String html) {
         List<Translation> translations = new ArrayList<>();
         int start = html.indexOf("<table id=\"result\" ");
         RowIterator iterator = new RowIterator(html, start);
@@ -89,13 +110,7 @@ public class BeolingusRestService {
         return translations;
     }
 
-    String rowStr = "<tr class=\"s1 c\">\n" +
-            "<td align=\"right\"><br /></td>\n" +
-            "<td class=\"f\"> <a href=\"/deutsch-englisch/Datenabruf.html;m\">Datenabruf</a> <span title=\"Substantiv, männlich (der)\">{m}</span>; <a href=\"/deutsch-englisch/Datenabfrage.html;m\">Daten<b>abfrage</b></a> <span title=\"Substantiv, weiblich (die)\">{f}</span> </td>\n" +
-            "<td class=\"f\"> <a href=\"/english-german/data.html;m\">data</a> <a href=\"/english-german/retrieval.html;m\">retrieval</a> </td>\n" +
-            "</tr>\n";
-
-    private Translation mapRow(String htmlRow) {
+    private static Translation mapRow(String htmlRow) {
         Translation newTranslation = new Translation();
 
         int languageSplitIndex = htmlRow.indexOf("</td>");
@@ -107,6 +122,7 @@ public class BeolingusRestService {
 
         return newTranslation;
     }
+
 
 
 

@@ -1,9 +1,12 @@
 package de.develcab.beolingus.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by jb on 17.02.17.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Translation {
     private String known;
     private String foreign;

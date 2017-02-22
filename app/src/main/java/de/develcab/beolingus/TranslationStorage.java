@@ -27,7 +27,7 @@ import de.develcab.beolingus.dto.Translation;
 
 public class TranslationStorage {
     private static final String TAG = TranslationStorage.class.getName();
-    private static final String FILE_SFX = ".html";
+    private static final String FILE_SFX = ".json";
 
     private int MAX_CACHED_SEARCHES = 100;
 
