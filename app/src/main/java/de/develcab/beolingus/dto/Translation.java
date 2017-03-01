@@ -1,5 +1,6 @@
 package de.develcab.beolingus.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -10,9 +11,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Translation {
     private String known;
     private String foreign;
+    @JsonIgnore
     private String knownPronounceUrl;
+    @JsonIgnore
     private String foreignPronounceUrl;
+    @JsonIgnore
     private String knownDescription;
+    @JsonIgnore
     private String foreignDescription;
 
     public String getKnown() {

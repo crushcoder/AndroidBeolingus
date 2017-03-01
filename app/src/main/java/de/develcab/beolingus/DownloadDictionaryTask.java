@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+
+import de.develcab.beolingus.util.RestTemplate;
 
 /**
  * Downloads de-en translations if not newest one already downloaded.

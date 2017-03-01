@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_start_search">Search</string>
+    <string name="textfield_hint_appstart">^^english or german</string>
+    <string name="toolbar_recent">Recent searches</string>
+    <string name="toolbar_settings">Preferences</string>
+</resources>

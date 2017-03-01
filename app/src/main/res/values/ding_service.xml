@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ding_service_names">
+        <item name="deen" default="true">De↔En Wörterbuch</item>
+        <item name="dees">De↔Es Wörterbuch</item>
+        <item name="dept">De↔Pt Wörterbuch</item>
+        <item name="de-en-ex">De↔En Beispielsätze</item>
+        <item name="dict-en">Erklärungen En</item>
+        <item name="dict-de">Synonyme De</item>
+        <item name="fortune-en">Sprüche En</item>
+        <item name="fortune-de">Sprüche De</item>
+        <item name="de-es-ex">De↔Es Beispielsätze</item>
+        <item name="fortune-es">Sprüche Es</item>
+        <item name="de-pt-ex">De↔Pt Beispielsätze</item>
+    </string-array>
+</resources>

@@ -5,18 +5,16 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 import de.develcab.beolingus.dto.Translation;
+import de.develcab.beolingus.service.BeolingusRestService;
 
 /**
  * Created by jb on 19.02.17.
@@ -30,14 +28,12 @@ public class DownloadTranslationTask extends AsyncTask<String, Void, Long> {
     private static TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
 
-    private TextView textView;
     private TableLayout table;
     private BeolingusRestService beo;
 
     private List<Translation> translations = Collections.emptyList();
 
-    public DownloadTranslationTask(TextView textView, TableLayout table, BeolingusRestService beo) {
-        this.textView = textView;
+    public DownloadTranslationTask(TableLayout table, BeolingusRestService beo) {
         this.table = table;
         table.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));// assuming the parent view is a LinearLayout
         table.setStretchAllColumns(true);
@@ -46,9 +42,9 @@ public class DownloadTranslationTask extends AsyncTask<String, Void, Long> {
     }
 
     protected Long doInBackground(String... searchStrings) {
-        translations = beo.loadTranslation(searchStrings[0]);
+        translations = beo.loadTranslation(searchStrings[0], searchStrings[1]);
 
-        return Long.valueOf(1);
+        return Long.valueOf(translations.size());
     }
 
     protected void onPostExecute(Long result) {
@@ -56,7 +52,6 @@ public class DownloadTranslationTask extends AsyncTask<String, Void, Long> {
         if (translations.isEmpty()) {
         } else {
             Log.d(TAG, "translations found: " + translations.size());
-            textView.setText("");
             for (Translation translation : translations) {
                 TableRow row = new TableRow(table.getContext());
                 row.setLayoutParams(tableParams); // TableLayout is the parent view

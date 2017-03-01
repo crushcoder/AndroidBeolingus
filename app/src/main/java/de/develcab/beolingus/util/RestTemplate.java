@@ -1,4 +1,4 @@
-package de.develcab.beolingus;
+package de.develcab.beolingus.util;
 
 import android.util.Log;
 
@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Created by jb on 21.02.17.

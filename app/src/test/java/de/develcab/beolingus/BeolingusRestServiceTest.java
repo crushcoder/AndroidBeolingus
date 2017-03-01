@@ -9,6 +9,9 @@ import org.junit.Test;
 import java.util.List;
 
 import de.develcab.beolingus.dto.Translation;
+import de.develcab.beolingus.service.BeolingusRestService;
+import de.develcab.beolingus.util.RestTemplate;
+import de.develcab.beolingus.util.TranslationStorage;
 
 /**
  * Created by jb on 17.02.17.
@@ -47,7 +50,7 @@ public class BeolingusRestServiceTest {
             " <div>\n" +
             "  <span style=\"white-space:nowrap\"><a id=\"mini\" href=\"http://dict.tu-chemnitz.de/\" target=\"_blank\">W&ouml;rterbuch</a> - <a href=\"https://www.tu-chemnitz.de/\" target=\"_content\">TU&nbsp;Chemnitz</a></span><br />\n" +
             "  <input name=\"query\" accesskey=\"q\" class=\"mini\" style=\"width:11em;margin:0\" value=\"Abfrage\" /><input\n" +
-            "   style=\"font-weight:bold;margin:0\" value=\" ? \" type=\"submit\" /><select class=\"m\" name=\"service\" title=\"Wählen Sie die Suchmethode aus\"> <optgroup label=\"Deutsch - Englisch\"> <option value=\"deen\" selected=\"selected\">De&harr;En W&ouml;rterbuch</option>\n" +
+            "   style=\"font-weight:bold;margin:0\" value=\" ? \" type=\"submit\" /><select class=\"m\" name=\"service\" title=\"Wählen Sie die Suchmethode aus\"> <optgroup label=\"Deutsch - Englisch\"> <option value=\"DEEN\" selected=\"selected\">De&harr;En W&ouml;rterbuch</option>\n" +
             " <option value=\"de-en\">De&rarr;En W&ouml;rterbuch</option>\n" +
             " <option value=\"en-de\">En&rarr;De W&ouml;rterbuch</option>\n" +
             " <option value=\"de-en-ex\">De&harr;En Beispielsätze</option>\n" +
@@ -55,12 +58,12 @@ public class BeolingusRestServiceTest {
             " <option value=\"dict-de\">Synonyme De</option>\n" +
             " <option value=\"fortune-en\">Spr&uuml;che En</option>\n" +
             " <option value=\"fortune-de\">Spr&uuml;che De</option>\n" +
-            " </optgroup> <optgroup label=\"Deutsch - Spanisch\"> <option value=\"dees\">De&harr;Es W&ouml;rterbuch</option>\n" +
+            " </optgroup> <optgroup label=\"Deutsch - Spanisch\"> <option value=\"DEES\">De&harr;Es W&ouml;rterbuch</option>\n" +
             " <option value=\"de-es\">De&rarr;Es W&ouml;rterbuch</option>\n" +
             " <option value=\"es-de\">Es&rarr;De W&ouml;rterbuch</option>\n" +
             " <option value=\"de-es-ex\">De&harr;Es Beispielsätze</option>\n" +
             " <option value=\"fortune-es\">Spr&uuml;che Es</option>\n" +
-            " </optgroup> <optgroup label=\"Deutsch - Portugiesisch\"> <option value=\"dept\">De&harr;Pt W&ouml;rterbuch</option>\n" +
+            " </optgroup> <optgroup label=\"Deutsch - Portugiesisch\"> <option value=\"DEPT\">De&harr;Pt W&ouml;rterbuch</option>\n" +
             " <option value=\"de-pt\">De&rarr;Pt W&ouml;rterbuch</option>\n" +
             " <option value=\"pt-de\">Pt&rarr;De W&ouml;rterbuch</option>\n" +
             " <option value=\"de-pt-ex\">De&harr;Pt Beispielsätze</option>\n" +
@@ -200,7 +203,7 @@ public class BeolingusRestServiceTest {
     @Test
     public void testSuccess() {
         String searchTerm = "Abfrage";
-        List<Translation> translations = beo.loadTranslation(searchTerm);
+        List<Translation> translations = beo.loadTranslation(searchTerm, "deen");
 
         Assert.assertNotNull(translations);
         Assert.assertFalse(translations.isEmpty());
