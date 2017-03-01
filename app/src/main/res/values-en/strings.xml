@@ -4,4 +4,6 @@
     <string name="textfield_hint_appstart">^^english or german</string>
     <string name="toolbar_recent">Recent searches</string>
     <string name="toolbar_settings">Preferences</string>
+    <string name="last_searches_dialog_title">Last Searches</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

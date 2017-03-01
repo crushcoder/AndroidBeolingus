@@ -4,10 +4,10 @@
     <string name="button_start_search">Suchen</string>
     <string name="toolbar_recent">Vorige Suchen</string>
     <string name="toolbar_settings">Einstellungen</string>
-    <string name="title_activity_settings">Settings</string>
     <integer name="number_of_cached_files_default_value" translatable="false">101</integer>
     <string name="number_of_cached_files_pref_name" translatable="false">CachedFilePrefName</string>
     <string name="ding_service_pref_name" translatable="false">DingServicePrefName</string>
     <string name="ding_serivce_default_value" translatable="false">deen</string>
     <string name="last_searches_dialog_title">Letzte Suchen</string>
+    <string name="title_activity_settings">Einstellungen</string>
 </resources>
